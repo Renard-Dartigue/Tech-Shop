@@ -2,11 +2,13 @@
 The back end for an e-commerce site.
 
 ## Description 
-This back end programming for the users e-commerce website that uses the latest technology. User is able to connect to database using Sequelize. 
+This back end programming for the users e-commerce website that uses the latest technology. User is able to connect to database using Sequelize. Programmer can search for categories, products, or tags. They can also create new ones, update them, and even delete them.
 
 ## Installation
-
-## Usage
+Clone project into local repository.
+```
+ git clone
+```
 
 ## License
 MIT License
