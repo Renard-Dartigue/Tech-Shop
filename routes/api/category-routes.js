@@ -39,51 +39,56 @@ router.get('/:id', async (req, res) => {
 });
 
 //======================================NEW CATEGORY==============================================================
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   // create a new category
-  Category.create({
-    category_name: req.body.category_name,
-  })
-  .then((newCategory) => {
-    res.json(newCategory);
-  })
-  .catch((err) => {
-    res.json(err);
-  });
+  try {
+    const categoryData = await Category.create(req.body);
+    res.status(200).json(categoryData);
+  } catch (err) {
+    res.status(400).json(err);
+  }
 });
 
 //======================================UPDATE CATEGORY=========================================================
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   // update a category by its `id` value
-  Category.update(
-    {
-      category_name: req.body.category_name,
-    },
-    {
+  try {
+    const categoryData = await Category.update(req.body, {
       where: {
         id: req.params.id,
-      }
-    }
-  )
-  .then((updatedCategory) => {
-    res.json(updatedCategory);
-  })
-  .catch((err) => res.json(err));
+      },
+  });
+
+  if (!categoryData) {
+    res.status(404).json({ message: 'No category found!'});
+    return;
+  }
+    res.status(200).json(categoryData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 
 //========================================DELETE CATEGORY=======================================================
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   // delete a category by its `id` value
-  Category.destroy({
-    where: {
-      id: req.params.id,
-    },
-  })
-  .then((deletedCategory) => {
-    res.json(deletedCategory);
-  })
-  .catch((err) => res.json(err));
+  try {
+    const categoryData = await Category.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    if (!categoryData) {
+      res.status(404).json({ message: 'No catagory!'});
+      return;
+    }
+
+    res.status(200).json(categoryData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;
